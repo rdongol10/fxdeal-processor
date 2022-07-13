@@ -1,6 +1,6 @@
 package com.rdongol.fxprocessor.service;
 
-import com.rdongol.fxprocessor.exceptionHandler.AppException;
+import com.rdongol.fxprocessor.exceptionHandler.exception.AppException;
 import com.rdongol.fxprocessor.model.FxDeal;
 import com.rdongol.fxprocessor.utils.ErrorMessages;
 import org.junit.jupiter.api.Test;
@@ -10,8 +10,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class FxDealProcessorTest {
@@ -156,7 +155,6 @@ public class FxDealProcessorTest {
     @Test
     void completeTest() {
         FxDeal fxDeal = new FxDeal();
-        fxDeal.setId(1L);
         fxDeal.setDealId("Test");
         fxDeal.setOrderCurrencyCode("USD");
         fxDeal.setToCurrencyCode("NPR");
@@ -164,7 +162,7 @@ public class FxDealProcessorTest {
         fxDeal.setDealAmount(100);
         Mockito.when(fxDealService.existsByDealId(Mockito.any())).thenReturn(false);
         Mockito.when(fxDealService.addFxDeal(Mockito.any())).thenReturn(fxDeal);
-        assertEquals(fxDealProcessor.processFxDeal(fxDeal), 1);
+        assertNotNull(fxDealProcessor.processFxDeal(fxDeal));
     }
 
 }

@@ -1,6 +1,6 @@
 package com.rdongol.fxprocessor.service;
 
-import com.rdongol.fxprocessor.exceptionHandler.AppException;
+import com.rdongol.fxprocessor.exceptionHandler.exception.AppException;
 import com.rdongol.fxprocessor.model.FxDeal;
 import com.rdongol.fxprocessor.utils.ErrorMessages;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class FxDealProcessor {
 
     protected static final Logger LOGGER = Logger.getLogger(FxDealProcessor.class.getName());
 
-    public long processFxDeal(FxDeal fxDeal) throws AppException {
+    public FxDeal processFxDeal(FxDeal fxDeal) throws AppException {
 
         this.validateFxDeal(fxDeal);
         if (fxDealService.existsByDealId(fxDeal.getDealId())) {
@@ -26,7 +26,7 @@ public class FxDealProcessor {
             throw new AppException(ErrorMessages.FX_DEAL_EXISTS.getErrorMessage() + " " + fxDeal.getDealId());
         }
 
-        return fxDealService.addFxDeal(fxDeal).getId();
+        return fxDealService.addFxDeal(fxDeal);
     }
 
     private void validateFxDeal(FxDeal fxDeal) throws AppException {

@@ -1,6 +1,6 @@
 package com.rdongol.fxprocessor.model;
 
-import com.rdongol.fxprocessor.exceptionHandler.AppException;
+import com.rdongol.fxprocessor.exceptionHandler.exception.AppException;
 import com.rdongol.fxprocessor.utils.ErrorMessages;
 import com.rdongol.fxprocessor.utils.StringUtils;
 import com.rdongol.fxprocessor.utils.ValidationUtils;
