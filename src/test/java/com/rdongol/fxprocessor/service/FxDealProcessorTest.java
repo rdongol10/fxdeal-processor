@@ -1,6 +1,7 @@
 package com.rdongol.fxprocessor.service;
 
 import com.rdongol.fxprocessor.model.FxDeal;
+import com.rdongol.fxprocessor.utils.ErrorMessages;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,7 +29,7 @@ public class FxDealProcessorTest {
         FxDeal fxDeal = new FxDeal();
         ValidationException exception =
                 assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
-        assertEquals(exception.getMessage(), "Deal id is missing");
+        assertEquals(exception.getMessage(), ErrorMessages.DEAL_ID_MISSING.getErrorMessage());
     }
 
     @Test
@@ -37,7 +38,7 @@ public class FxDealProcessorTest {
         fxDeal.setDealId("Test");
         ValidationException exception =
                 assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
-        assertEquals(exception.getMessage(), "Order currency code is missing");
+        assertEquals(exception.getMessage(), ErrorMessages.ORDER_CURRENCY_MISSING.getErrorMessage());
     }
 
     @Test
@@ -47,7 +48,7 @@ public class FxDealProcessorTest {
         fxDeal.setOrderCurrencyCode("USD");
         ValidationException exception =
                 assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
-        assertEquals(exception.getMessage(), "to currency code is missing");
+        assertEquals(exception.getMessage(), ErrorMessages.TO_CURRENCY_MISSING.getErrorMessage());
     }
 
     @Test
@@ -58,7 +59,7 @@ public class FxDealProcessorTest {
         fxDeal.setToCurrencyCode("NPR");
         ValidationException exception =
                 assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
-        assertEquals(exception.getMessage(), "order date is missing");
+        assertEquals(exception.getMessage(), ErrorMessages.ORDER_DATE_MISSING.getErrorMessage());
 
     }
 
@@ -72,7 +73,7 @@ public class FxDealProcessorTest {
         fxDeal.setDealAmount(0);
         ValidationException exception =
                 assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
-        assertEquals(exception.getMessage(), "Deal amount is cannot be 0");
+        assertEquals(exception.getMessage(), ErrorMessages.DEAL_AMOUNT_ZERO.getErrorMessage());
     }
 
     @Test
@@ -85,7 +86,7 @@ public class FxDealProcessorTest {
         fxDeal.setDealAmount(-100);
         ValidationException exception =
                 assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
-        assertEquals(exception.getMessage(), "Deal amount is cannot less than 0");
+        assertEquals(exception.getMessage(), ErrorMessages.DEAL_AMOUNT_LESS_THAN_ZERO.getErrorMessage());
     }
 
     @Test
@@ -98,7 +99,7 @@ public class FxDealProcessorTest {
         fxDeal.setDealAmount(100);
         ValidationException exception =
                 assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
-        assertEquals(exception.getMessage(), "Invalid order currency code RAM");
+        assertEquals(exception.getMessage(), ErrorMessages.INVALID_ORDER_CURRENCY_CODE.getErrorMessage());
     }
 
     @Test
@@ -111,7 +112,7 @@ public class FxDealProcessorTest {
         fxDeal.setDealAmount(100);
         ValidationException exception =
                 assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
-        assertEquals(exception.getMessage(), "Invalid to currency code RAM");
+        assertEquals(exception.getMessage(), ErrorMessages.INVALID_TO_CURRENCY_CODE.getErrorMessage());
     }
 
     @Test
@@ -124,7 +125,7 @@ public class FxDealProcessorTest {
         fxDeal.setDealAmount(100);
         ValidationException exception =
                 assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
-        assertEquals(exception.getMessage(), "Order currency code and to currency code can not be same");
+        assertEquals(exception.getMessage(), ErrorMessages.TO_AND_ORDER_CURRENCY_SAME.getErrorMessage());
     }
 
     @Test
@@ -137,7 +138,7 @@ public class FxDealProcessorTest {
         fxDeal.setDealAmount(100);
         ValidationException exception =
                 assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
-        assertEquals(exception.getMessage(), "Invalid date 2011-12-03");
+        assertEquals(exception.getMessage(), ErrorMessages.INVALID_DATE.getErrorMessage());
     }
 
     @Test
@@ -151,7 +152,7 @@ public class FxDealProcessorTest {
         Mockito.when(fxDealService.existsByDealId(Mockito.any())).thenReturn(true);
         EntityExistsException exception =
                 assertThrows(EntityExistsException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
-        assertEquals(exception.getMessage(), "Fx deal Test already exists");
+        assertEquals(exception.getMessage(), ErrorMessages.FX_DEAL_EXISTS.getErrorMessage() + " " + fxDeal.getDealId());
     }
 
     @Test
