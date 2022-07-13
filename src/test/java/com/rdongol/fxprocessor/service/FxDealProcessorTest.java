@@ -1,5 +1,6 @@
 package com.rdongol.fxprocessor.service;
 
+import com.rdongol.fxprocessor.exceptionHandler.AppException;
 import com.rdongol.fxprocessor.model.FxDeal;
 import com.rdongol.fxprocessor.utils.ErrorMessages;
 import org.junit.jupiter.api.Test;
@@ -8,9 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import javax.persistence.EntityExistsException;
-import javax.xml.bind.ValidationException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -27,8 +25,8 @@ public class FxDealProcessorTest {
     @Test
     void dealIdMissingTest() {
         FxDeal fxDeal = new FxDeal();
-        ValidationException exception =
-                assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
+        AppException exception =
+                assertThrows(AppException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
         assertEquals(exception.getMessage(), ErrorMessages.DEAL_ID_MISSING.getErrorMessage());
     }
 
@@ -36,8 +34,8 @@ public class FxDealProcessorTest {
     void orderCurrencyCodeMissingTest() {
         FxDeal fxDeal = new FxDeal();
         fxDeal.setDealId("Test");
-        ValidationException exception =
-                assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
+        AppException exception =
+                assertThrows(AppException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
         assertEquals(exception.getMessage(), ErrorMessages.ORDER_CURRENCY_MISSING.getErrorMessage());
     }
 
@@ -46,8 +44,8 @@ public class FxDealProcessorTest {
         FxDeal fxDeal = new FxDeal();
         fxDeal.setDealId("Test");
         fxDeal.setOrderCurrencyCode("USD");
-        ValidationException exception =
-                assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
+        AppException exception =
+                assertThrows(AppException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
         assertEquals(exception.getMessage(), ErrorMessages.TO_CURRENCY_MISSING.getErrorMessage());
     }
 
@@ -57,8 +55,8 @@ public class FxDealProcessorTest {
         fxDeal.setDealId("Test");
         fxDeal.setOrderCurrencyCode("USD");
         fxDeal.setToCurrencyCode("NPR");
-        ValidationException exception =
-                assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
+        AppException exception =
+                assertThrows(AppException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
         assertEquals(exception.getMessage(), ErrorMessages.ORDER_DATE_MISSING.getErrorMessage());
 
     }
@@ -71,8 +69,8 @@ public class FxDealProcessorTest {
         fxDeal.setToCurrencyCode("NPR");
         fxDeal.setDateTime("2011-12-03T10:15:30");
         fxDeal.setDealAmount(0);
-        ValidationException exception =
-                assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
+        AppException exception =
+                assertThrows(AppException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
         assertEquals(exception.getMessage(), ErrorMessages.DEAL_AMOUNT_ZERO.getErrorMessage());
     }
 
@@ -84,8 +82,8 @@ public class FxDealProcessorTest {
         fxDeal.setToCurrencyCode("NPR");
         fxDeal.setDateTime("2011-12-03T10:15:30");
         fxDeal.setDealAmount(-100);
-        ValidationException exception =
-                assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
+        AppException exception =
+                assertThrows(AppException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
         assertEquals(exception.getMessage(), ErrorMessages.DEAL_AMOUNT_LESS_THAN_ZERO.getErrorMessage());
     }
 
@@ -97,8 +95,8 @@ public class FxDealProcessorTest {
         fxDeal.setToCurrencyCode("NPR");
         fxDeal.setDateTime("2011-12-03T10:15:30");
         fxDeal.setDealAmount(100);
-        ValidationException exception =
-                assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
+        AppException exception =
+                assertThrows(AppException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
         assertEquals(exception.getMessage(), ErrorMessages.INVALID_ORDER_CURRENCY_CODE.getErrorMessage());
     }
 
@@ -110,8 +108,8 @@ public class FxDealProcessorTest {
         fxDeal.setToCurrencyCode("RAM");
         fxDeal.setDateTime("2011-12-03T10:15:30");
         fxDeal.setDealAmount(100);
-        ValidationException exception =
-                assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
+        AppException exception =
+                assertThrows(AppException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
         assertEquals(exception.getMessage(), ErrorMessages.INVALID_TO_CURRENCY_CODE.getErrorMessage());
     }
 
@@ -123,8 +121,8 @@ public class FxDealProcessorTest {
         fxDeal.setToCurrencyCode("NPR");
         fxDeal.setDateTime("2011-12-03T10:15:30");
         fxDeal.setDealAmount(100);
-        ValidationException exception =
-                assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
+        AppException exception =
+                assertThrows(AppException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
         assertEquals(exception.getMessage(), ErrorMessages.TO_AND_ORDER_CURRENCY_SAME.getErrorMessage());
     }
 
@@ -136,8 +134,8 @@ public class FxDealProcessorTest {
         fxDeal.setToCurrencyCode("NPR");
         fxDeal.setDateTime("2011-12-03");
         fxDeal.setDealAmount(100);
-        ValidationException exception =
-                assertThrows(ValidationException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
+        AppException exception =
+                assertThrows(AppException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
         assertEquals(exception.getMessage(), ErrorMessages.INVALID_DATE.getErrorMessage());
     }
 
@@ -150,13 +148,13 @@ public class FxDealProcessorTest {
         fxDeal.setDateTime("2011-12-03T10:15:30");
         fxDeal.setDealAmount(100);
         Mockito.when(fxDealService.existsByDealId(Mockito.any())).thenReturn(true);
-        EntityExistsException exception =
-                assertThrows(EntityExistsException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
+        AppException exception =
+                assertThrows(AppException.class, () -> fxDealProcessor.processFxDeal(fxDeal));
         assertEquals(exception.getMessage(), ErrorMessages.FX_DEAL_EXISTS.getErrorMessage() + " " + fxDeal.getDealId());
     }
 
     @Test
-    void completeTest() throws Exception {
+    void completeTest() {
         FxDeal fxDeal = new FxDeal();
         fxDeal.setId(1L);
         fxDeal.setDealId("Test");
