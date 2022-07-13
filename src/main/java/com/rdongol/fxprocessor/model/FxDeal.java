@@ -1,5 +1,6 @@
 package com.rdongol.fxprocessor.model;
 
+import com.rdongol.fxprocessor.utils.ErrorMessages;
 import com.rdongol.fxprocessor.utils.StringUtils;
 import com.rdongol.fxprocessor.utils.ValidationUtils;
 
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.xml.bind.ValidationException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Entity
 public class FxDeal {
@@ -21,6 +24,8 @@ public class FxDeal {
     private String dateTime;
     private double dealAmount;
 
+
+    protected static final Logger LOGGER = Logger.getLogger(FxDeal.class.getName());
 
     public Long getId() {
         return id;
@@ -72,43 +77,53 @@ public class FxDeal {
 
     public void validate() throws Exception {
         if (StringUtils.isEmpty(this.dealId)) {
-            throw new ValidationException("Deal id is missing");
+            LOGGER.log(Level.SEVERE, ErrorMessages.DEAL_ID_MISSING.getErrorMessage());
+            throw new ValidationException(ErrorMessages.DEAL_ID_MISSING.getErrorMessage());
         }
 
         if (StringUtils.isEmpty(this.orderCurrencyCode)) {
-            throw new ValidationException("Order currency code is missing");
+            LOGGER.log(Level.SEVERE, ErrorMessages.ORDER_CURRENCY_MISSING.getErrorMessage());
+            throw new ValidationException(ErrorMessages.ORDER_CURRENCY_MISSING.getErrorMessage());
         }
 
         if (StringUtils.isEmpty(this.toCurrencyCode)) {
-            throw new ValidationException("to currency code is missing");
+            LOGGER.log(Level.SEVERE, ErrorMessages.TO_CURRENCY_MISSING.getErrorMessage());
+            throw new ValidationException(ErrorMessages.TO_CURRENCY_MISSING.getErrorMessage());
         }
 
         if (StringUtils.isEmpty(this.dateTime)) {
-            throw new ValidationException("order date is missing");
+            LOGGER.log(Level.SEVERE, ErrorMessages.ORDER_DATE_MISSING.getErrorMessage());
+            throw new ValidationException(ErrorMessages.ORDER_DATE_MISSING.getErrorMessage());
         }
 
         if (dealAmount == 0.0) {
-            throw new ValidationException("Deal amount is cannot be 0");
+            LOGGER.log(Level.SEVERE, ErrorMessages.DEAL_AMOUNT_ZERO.getErrorMessage());
+            throw new ValidationException(ErrorMessages.DEAL_AMOUNT_ZERO.getErrorMessage());
         }
 
         if (dealAmount < 0) {
-            throw new ValidationException("Deal amount is cannot less than 0");
+            LOGGER.log(Level.SEVERE, ErrorMessages.DEAL_AMOUNT_LESS_THAN_ZERO.getErrorMessage());
+            throw new ValidationException(ErrorMessages.DEAL_AMOUNT_LESS_THAN_ZERO.getErrorMessage());
         }
 
         if (!ValidationUtils.isValidCurrencyCode(this.orderCurrencyCode)) {
-            throw new ValidationException("Invalid order currency code " + this.orderCurrencyCode);
+            LOGGER.log(Level.SEVERE, ErrorMessages.INVALID_ORDER_CURRENCY_CODE.getErrorMessage());
+            throw new ValidationException(ErrorMessages.INVALID_ORDER_CURRENCY_CODE.getErrorMessage());
         }
 
         if (!ValidationUtils.isValidCurrencyCode(this.toCurrencyCode)) {
-            throw new ValidationException("Invalid to currency code " + this.toCurrencyCode);
+            LOGGER.log(Level.SEVERE, ErrorMessages.INVALID_TO_CURRENCY_CODE.getErrorMessage());
+            throw new ValidationException(ErrorMessages.INVALID_TO_CURRENCY_CODE.getErrorMessage());
         }
 
         if (this.orderCurrencyCode.equalsIgnoreCase(this.toCurrencyCode)) {
-            throw new ValidationException("Order currency code and to currency code can not be same");
+            LOGGER.log(Level.SEVERE, ErrorMessages.TO_AND_ORDER_CURRENCY_SAME.getErrorMessage());
+            throw new ValidationException(ErrorMessages.TO_AND_ORDER_CURRENCY_SAME.getErrorMessage());
         }
 
         if (!ValidationUtils.isValidISODateTime(this.dateTime)) {
-            throw new ValidationException("Invalid date " + this.dateTime);
+            LOGGER.log(Level.SEVERE, ErrorMessages.INVALID_DATE.getErrorMessage());
+            throw new ValidationException(ErrorMessages.INVALID_DATE.getErrorMessage());
         }
 
     }
