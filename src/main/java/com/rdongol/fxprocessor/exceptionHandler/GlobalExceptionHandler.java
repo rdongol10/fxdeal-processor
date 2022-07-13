@@ -27,14 +27,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> buildErrorResponse(Exception exception,
                                                       HttpStatus httpStatus) {
-        return buildErrorResponse(exception, exception.getMessage(), httpStatus);
-    }
-
-    private ResponseEntity<Object> buildErrorResponse(Exception exception,
-                                                      String message,
-                                                      HttpStatus httpStatus
-    ) {
-        ErrorResponse errorResponse = new ErrorResponse(httpStatus.value(), message);
+        ErrorResponse errorResponse = new ErrorResponse(httpStatus.value(), exception.getMessage());
 
         return ResponseEntity.status(httpStatus).body(errorResponse);
     }

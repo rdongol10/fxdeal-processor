@@ -19,7 +19,7 @@ public class FxDealController {
     }
 
     @PostMapping
-    public ResponseEntity<FxDeal> login(@RequestBody FxDeal fxDeal) {
+    public ResponseEntity<FxDeal> add(@RequestBody FxDeal fxDeal) {
         return ResponseEntity.ok(fxDealProcessor.processFxDeal(fxDeal));
     }
 }
