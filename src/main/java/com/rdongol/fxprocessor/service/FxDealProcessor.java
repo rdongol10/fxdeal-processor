@@ -5,9 +5,6 @@ import com.rdongol.fxprocessor.model.FxDeal;
 import com.rdongol.fxprocessor.utils.ErrorMessages;
 import org.springframework.stereotype.Service;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 @Service
 public class FxDealProcessor {
     private FxDealService fxDealService;
@@ -16,13 +13,10 @@ public class FxDealProcessor {
         this.fxDealService = fxDealService;
     }
 
-    protected static final Logger LOGGER = Logger.getLogger(FxDealProcessor.class.getName());
-
     public FxDeal processFxDeal(FxDeal fxDeal) throws AppException {
 
         this.validateFxDeal(fxDeal);
         if (fxDealService.existsByDealId(fxDeal.getDealId())) {
-            LOGGER.log(Level.SEVERE, ErrorMessages.FX_DEAL_EXISTS.getErrorMessage() + " " + fxDeal.getDealId());
             throw new AppException(ErrorMessages.FX_DEAL_EXISTS.getErrorMessage() + " " + fxDeal.getDealId());
         }
 

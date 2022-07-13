@@ -21,7 +21,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AppException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleAppException(AppException appException, WebRequest request) {
-        LOGGER.log(Level.WARNING, "App Exception", appException);
+        LOGGER.log(Level.WARNING, "App Exception : " + appException.getMessage());
         return buildErrorResponse(appException, HttpStatus.BAD_REQUEST);
     }
 
@@ -31,6 +31,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return ResponseEntity.status(httpStatus).body(errorResponse);
     }
-
 
 }
