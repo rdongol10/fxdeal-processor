@@ -4,6 +4,8 @@ import com.rdongol.fxprocessor.utils.StringUtils;
 import com.rdongol.fxprocessor.utils.ValidationUtils;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.xml.bind.ValidationException;
 
@@ -11,6 +13,7 @@ import javax.xml.bind.ValidationException;
 public class FxDeal {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String dealId;
     private String orderCurrencyCode;
